@@ -85,11 +85,12 @@ open class LocationAnnotationNode: LocationNode {
     let plane = SCNPlane(width: bubbleView.bounds.size.width / 100, height: bubbleView.bounds.size.height / 100)
     plane.cornerRadius = 1.0
     plane.firstMaterial!.diffuse.contents = bubbleView
-    if #available(iOS 10.0, *) {
-      plane.firstMaterial!.lightingModel = .physicallyBased
-    } else {
-      plane.firstMaterial!.lightingModel = .constant
-    }
+    plane.firstMaterial!.lightingModel = .constant
+//    if #available(iOS 10.0, *) {
+//      plane.firstMaterial!.lightingModel = .physicallyBased
+//    } else {
+//      plane.firstMaterial!.lightingModel = .constant
+//    }
     
     annotationNode = SCNNode()
     annotationNode.geometry = plane

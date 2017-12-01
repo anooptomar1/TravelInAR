@@ -37,6 +37,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
   var updateInfoLabelTimer: Timer?
   
   var addBubbleButton: UIButton?
+  var messageLabel: UILabel?
   
   var adjustNorthByTappingSidesOfScreen = false
   
@@ -131,6 +132,59 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
                                                       constant: 50)
     
     sceneLocationView.addConstraints([addButtonContraintTrailing, addButtonContraintBottom, addButtonContraintWidth, addButtonContraintHeight])
+    
+    let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleBubbleTap(_:)))
+    sceneLocationView.addGestureRecognizer(tapRec)
+    
+    // message label
+    messageLabel = UILabel(frame: CGRect.zero)
+    messageLabel?.translatesAutoresizingMaskIntoConstraints = false
+    messageLabel?.backgroundColor = UIColor.white
+    messageLabel?.textAlignment = NSTextAlignment.center;
+    //messageLabel?.font = UIFont.systemFont(ofSize: 3)
+    messageLabel?.textColor = UIColor.black
+    sceneLocationView.addSubview(messageLabel!)
+    messageLabel?.isHidden = true
+    let messageLabelContraintLeading = NSLayoutConstraint(item: messageLabel!,
+                                                          attribute: NSLayoutAttribute.leading,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: sceneLocationView,
+                                                          attribute: NSLayoutAttribute.leading,
+                                                          multiplier: 1.0,
+                                                          constant: 30)
+    
+    let messageLabelContraintCenterX = NSLayoutConstraint(item: sceneLocationView,
+                                                      attribute: NSLayoutAttribute.centerX,
+                                                      relatedBy: NSLayoutRelation.equal,
+                                                      toItem: messageLabel,
+                                                      attribute: NSLayoutAttribute.centerX,
+                                                      multiplier: 1.0,
+                                                      constant: 0.0)
+    
+    let messageLabelContraintTrailing = NSLayoutConstraint(item: sceneLocationView,
+                                                           attribute: NSLayoutAttribute.trailing,
+                                                           relatedBy: NSLayoutRelation.equal,
+                                                           toItem: messageLabel,
+                                                           attribute: NSLayoutAttribute.trailing,
+                                                           multiplier: 1.0,
+                                                           constant: 30)
+    let messageLabelContraintCenterY = NSLayoutConstraint(item: sceneLocationView,
+                                                          attribute: NSLayoutAttribute.centerY,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: messageLabel,
+                                                          attribute: NSLayoutAttribute.centerY,
+                                                          multiplier: 1.0,
+                                                          constant: 0.0)
+    let messageLabelContraintHeight = NSLayoutConstraint(item: messageLabel!,
+                                                          attribute: NSLayoutAttribute.height,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: nil,
+                                                          attribute: NSLayoutAttribute.notAnAttribute,
+                                                          multiplier: 1.0,
+                                                          constant: 30.0)
+    
+    sceneLocationView.addConstraints([messageLabelContraintLeading, messageLabelContraintCenterX, messageLabelContraintTrailing, messageLabelContraintCenterY, messageLabelContraintHeight])
+
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -290,8 +344,22 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     let image = UIImage(named: "dominoes")!
     let annotationNode = LocationAnnotationNode(location: nil, image: image)
     annotationNode.scaleRelativeToDistance = true
+    annotationNode.name = "Bla bla"
     sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
   }
+  
+  @objc func handleBubbleTap(_ rec: UITapGestureRecognizer) {
+    if rec.state == .ended {
+      let location: CGPoint = rec.location(in: sceneLocationView)
+      let hits = sceneLocationView.hitTest(location, options: nil)
+      if let tappednode = hits.first?.node {
+        let node = tappednode.parent as! LocationAnnotationNode
+        let name = node.name
+        node.bubbleView.backgroundColor = UIColor.green
+      }
+    }
+  }
+  
   
   //MARK: MKMapViewDelegate
   

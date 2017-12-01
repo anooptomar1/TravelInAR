@@ -68,6 +68,7 @@ class BubbleView: UIView {
                                                         constant: self.bounds.size.width - 2*imageViewPadding)
     self.addConstraints([imageViewContraintLeading, imageViewContraintTop, imageViewContraintTrailing, imageViewContraintHeight])
     imageView?.layer.cornerRadius = (imageView?.frame.size.width)!/2
+    
     // message label
     messageLabel = UILabel(frame: CGRect.zero)
     messageLabel?.translatesAutoresizingMaskIntoConstraints = false
