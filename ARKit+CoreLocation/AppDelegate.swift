@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.makeKeyAndVisible()
         
         if #available(iOS 11.0, *) {
-            let vc = ViewController()
+            let vc = MMTViewController()
             self.window!.rootViewController = vc
         } else {
             self.window!.rootViewController = NotSupportedViewController() 
