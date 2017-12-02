@@ -144,22 +144,13 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     //messageLabel?.font = UIFont.systemFont(ofSize: 3)
     messageLabel?.textColor = UIColor.black
     sceneLocationView.addSubview(messageLabel!)
-    messageLabel?.isHidden = true
-    let messageLabelContraintLeading = NSLayoutConstraint(item: messageLabel!,
+    let messageLabelContraintLeading = NSLayoutConstraint(item: sceneLocationView,
                                                           attribute: NSLayoutAttribute.leading,
                                                           relatedBy: NSLayoutRelation.equal,
-                                                          toItem: sceneLocationView,
+                                                          toItem: messageLabel,
                                                           attribute: NSLayoutAttribute.leading,
                                                           multiplier: 1.0,
-                                                          constant: 30)
-    
-    let messageLabelContraintCenterX = NSLayoutConstraint(item: sceneLocationView,
-                                                      attribute: NSLayoutAttribute.centerX,
-                                                      relatedBy: NSLayoutRelation.equal,
-                                                      toItem: messageLabel,
-                                                      attribute: NSLayoutAttribute.centerX,
-                                                      multiplier: 1.0,
-                                                      constant: 0.0)
+                                                          constant: 5)
     
     let messageLabelContraintTrailing = NSLayoutConstraint(item: sceneLocationView,
                                                            attribute: NSLayoutAttribute.trailing,
@@ -167,7 +158,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
                                                            toItem: messageLabel,
                                                            attribute: NSLayoutAttribute.trailing,
                                                            multiplier: 1.0,
-                                                           constant: 30)
+                                                           constant: 5)
     let messageLabelContraintCenterY = NSLayoutConstraint(item: sceneLocationView,
                                                           attribute: NSLayoutAttribute.centerY,
                                                           relatedBy: NSLayoutRelation.equal,
@@ -183,8 +174,8 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
                                                           multiplier: 1.0,
                                                           constant: 30.0)
     
-    sceneLocationView.addConstraints([messageLabelContraintLeading, messageLabelContraintCenterX, messageLabelContraintTrailing, messageLabelContraintCenterY, messageLabelContraintHeight])
-
+    sceneLocationView.addConstraints([messageLabelContraintLeading, messageLabelContraintTrailing, messageLabelContraintCenterY, messageLabelContraintHeight])
+    messageLabel?.isHidden = true
   }
   
   override func viewWillAppear(_ animated: Bool) {
