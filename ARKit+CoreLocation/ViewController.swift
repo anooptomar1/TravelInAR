@@ -36,9 +36,18 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
   var infoLabel = UILabel()
   
   var updateInfoLabelTimer: Timer?
+  var sound: Sound?
   
   var addBubbleButton: UIButton?
   var messageLabel: UILabel?
+  var frameImageView: UIImageView?
+  var spinnerView: UIActivityIndicatorView?
+  var micImageView: UIButton?
+  var resultsImageView: UIImageView?
+  var resultsImageViewContraintTop: NSLayoutConstraint?
+  
+  var countTimer:Int = 10
+  var micCounter:Int = 3
   
   var adjustNorthByTappingSidesOfScreen = false
   
@@ -49,6 +58,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     infoLabel.textAlignment = .left
     infoLabel.textColor = UIColor.white
     infoLabel.numberOfLines = 0
+    infoLabel.isHidden = true
     sceneLocationView.addSubview(infoLabel)
     
     updateInfoLabelTimer = Timer.scheduledTimer(
@@ -84,7 +94,6 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
       mapView.showsUserLocation = true
       mapView.alpha = 0.8
       view.addSubview(mapView)
-      
       updateUserLocationTimer = Timer.scheduledTimer(
         timeInterval: 0.5,
         target: self,
@@ -92,7 +101,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
         userInfo: nil,
         repeats: true)
     }
-    
+    sound = Sound()
     addBubbleButton = UIButton(frame: CGRect.zero)
     addBubbleButton?.translatesAutoresizingMaskIntoConstraints = false
     addBubbleButton?.setImage(UIImage(named: "add"), for: UIControlState.normal)
@@ -137,6 +146,8 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     let tapRec = UITapGestureRecognizer(target: self, action: #selector(handleBubbleTap(_:)))
     sceneLocationView.addGestureRecognizer(tapRec)
     
+    addBubbleButton?.isHidden = true
+    
     // message label
     messageLabel = UILabel(frame: CGRect.zero)
     messageLabel?.translatesAutoresizingMaskIntoConstraints = false
@@ -177,12 +188,179 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     
     sceneLocationView.addConstraints([messageLabelContraintLeading, messageLabelContraintTrailing, messageLabelContraintCenterY, messageLabelContraintHeight])
     messageLabel?.isHidden = true
+    
+    frameImageView = UIImageView(frame: CGRect.zero)
+    frameImageView?.translatesAutoresizingMaskIntoConstraints = false
+    frameImageView?.image = UIImage(named: "frame1")
+    frameImageView?.tintColor = UIColor.green
+    sceneLocationView.addSubview(frameImageView!)
+    
+    let frameImageViewContraintCenterX = NSLayoutConstraint(item: sceneLocationView,
+                                                          attribute: NSLayoutAttribute.centerX,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: frameImageView,
+                                                          attribute: NSLayoutAttribute.centerX,
+                                                          multiplier: 1.0,
+                                                          constant: 0.0)
+    
+    let frameImageViewContraintCenterY = NSLayoutConstraint(item: sceneLocationView,
+                                                          attribute: NSLayoutAttribute.centerY,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: frameImageView,
+                                                          attribute: NSLayoutAttribute.centerY,
+                                                          multiplier: 1.0,
+                                                          constant: 0.0)
+    
+    let frameImageViewContraintHeight = NSLayoutConstraint(item: frameImageView!,
+                                                         attribute: NSLayoutAttribute.height,
+                                                         relatedBy: NSLayoutRelation.equal,
+                                                         toItem: nil,
+                                                         attribute: NSLayoutAttribute.notAnAttribute,
+                                                         multiplier: 1.0,
+                                                         constant: 400.0)
+    
+    let frameImageViewContraintWidth = NSLayoutConstraint(item: frameImageView!,
+                                                           attribute: NSLayoutAttribute.width,
+                                                           relatedBy: NSLayoutRelation.equal,
+                                                           toItem: nil,
+                                                           attribute: NSLayoutAttribute.notAnAttribute,
+                                                           multiplier: 1.0,
+                                                           constant: 300.0)
+    
+    sceneLocationView.addConstraints([frameImageViewContraintCenterX, frameImageViewContraintCenterY, frameImageViewContraintHeight, frameImageViewContraintWidth])
+    
+    spinnerView = UIActivityIndicatorView(frame: CGRect.zero)
+    spinnerView?.translatesAutoresizingMaskIntoConstraints = false
+    spinnerView?.color = UIColor.green
+    sceneLocationView.addSubview(spinnerView!)
+    
+    let spinnerViewContraintCenterX = NSLayoutConstraint(item: sceneLocationView,
+                                                            attribute: NSLayoutAttribute.centerX,
+                                                            relatedBy: NSLayoutRelation.equal,
+                                                            toItem: spinnerView,
+                                                            attribute: NSLayoutAttribute.centerX,
+                                                            multiplier: 1.0,
+                                                            constant: 0.0)
+    
+    let spinnerViewContraintCenterY = NSLayoutConstraint(item: sceneLocationView,
+                                                            attribute: NSLayoutAttribute.centerY,
+                                                            relatedBy: NSLayoutRelation.equal,
+                                                            toItem: spinnerView,
+                                                            attribute: NSLayoutAttribute.centerY,
+                                                            multiplier: 1.0,
+                                                            constant: 0.0)
+    
+    let spinnerViewContraintHeight = NSLayoutConstraint(item: spinnerView!,
+                                                           attribute: NSLayoutAttribute.height,
+                                                           relatedBy: NSLayoutRelation.equal,
+                                                           toItem: nil,
+                                                           attribute: NSLayoutAttribute.notAnAttribute,
+                                                           multiplier: 1.0,
+                                                           constant: 100.0)
+    
+    let spinnerViewContraintWidth = NSLayoutConstraint(item: spinnerView!,
+                                                          attribute: NSLayoutAttribute.width,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: nil,
+                                                          attribute: NSLayoutAttribute.notAnAttribute,
+                                                          multiplier: 1.0,
+                                                          constant: 100.0)
+    
+    sceneLocationView.addConstraints([spinnerViewContraintCenterX, spinnerViewContraintCenterY, spinnerViewContraintHeight, spinnerViewContraintWidth])
+    spinnerView?.isHidden = true
+    
+    micImageView = UIButton(frame: CGRect.zero)
+    micImageView?.translatesAutoresizingMaskIntoConstraints = false
+    micImageView?.setImage(UIImage(named: "mic"), for: UIControlState.normal)
+    micImageView?.backgroundColor = UIColor.white
+    micImageView?.tintColor = UIColor.orange
+    sceneLocationView.addSubview(micImageView!)
+    micImageView?.addTarget(self, action: #selector(micButtonTap(_:)), for: UIControlEvents.touchUpInside)
+    
+    let micImageViewContraintTrailing = NSLayoutConstraint(item: sceneLocationView,
+                                                         attribute: NSLayoutAttribute.trailing,
+                                                         relatedBy: NSLayoutRelation.equal,
+                                                         toItem: micImageView,
+                                                         attribute: NSLayoutAttribute.trailing,
+                                                         multiplier: 1.0,
+                                                         constant: 20.0)
+    
+    let micImageViewContraintCenterY = NSLayoutConstraint(item: sceneLocationView,
+                                                         attribute: NSLayoutAttribute.centerY,
+                                                         relatedBy: NSLayoutRelation.equal,
+                                                         toItem: micImageView,
+                                                         attribute: NSLayoutAttribute.centerY,
+                                                         multiplier: 1.0,
+                                                         constant: 0.0)
+    
+    let micImageViewContraintHeight = NSLayoutConstraint(item: micImageView!,
+                                                        attribute: NSLayoutAttribute.height,
+                                                        relatedBy: NSLayoutRelation.equal,
+                                                        toItem: nil,
+                                                        attribute: NSLayoutAttribute.notAnAttribute,
+                                                        multiplier: 1.0,
+                                                        constant: 80.0)
+    
+    let micImageViewContraintWidth = NSLayoutConstraint(item: micImageView!,
+                                                       attribute: NSLayoutAttribute.width,
+                                                       relatedBy: NSLayoutRelation.equal,
+                                                       toItem: nil,
+                                                       attribute: NSLayoutAttribute.notAnAttribute,
+                                                       multiplier: 1.0,
+                                                       constant: 80.0)
+    
+    sceneLocationView.addConstraints([micImageViewContraintTrailing, micImageViewContraintCenterY, micImageViewContraintHeight, micImageViewContraintWidth])
+    micImageView?.isHidden = true
+    
+    resultsImageView = UIImageView(frame: CGRect.zero)
+    resultsImageView?.translatesAutoresizingMaskIntoConstraints = false
+    resultsImageView?.image = UIImage(named: "results.png")
+    sceneLocationView.addSubview(resultsImageView!)
+    
+    let resultsImageViewContraintLeading = NSLayoutConstraint(item: resultsImageView!,
+                                                            attribute: NSLayoutAttribute.leading,
+                                                            relatedBy: NSLayoutRelation.equal,
+                                                            toItem: sceneLocationView,
+                                                            attribute: NSLayoutAttribute.leading,
+                                                            multiplier: 1.0,
+                                                            constant: 10.0)
+    
+    let resultsImageViewContraintTrailing = NSLayoutConstraint(item: sceneLocationView,
+                                                            attribute: NSLayoutAttribute.trailing,
+                                                            relatedBy: NSLayoutRelation.equal,
+                                                            toItem: resultsImageView,
+                                                            attribute: NSLayoutAttribute.trailing,
+                                                            multiplier: 1.0,
+                                                            constant: 10.0)
+    
+    let resultsImageViewContraintHeight = NSLayoutConstraint(item: resultsImageView!,
+                                                           attribute: NSLayoutAttribute.height,
+                                                           relatedBy: NSLayoutRelation.equal,
+                                                           toItem: nil,
+                                                           attribute: NSLayoutAttribute.notAnAttribute,
+                                                           multiplier: 1.0,
+                                                           constant: 250.0)
+    
+    resultsImageViewContraintTop = NSLayoutConstraint(item: resultsImageView!,
+                                                            attribute: NSLayoutAttribute.top,
+                                                            relatedBy: NSLayoutRelation.equal,
+                                                            toItem: sceneLocationView,
+                                                            attribute: NSLayoutAttribute.bottom,
+                                                            multiplier: 1.0,
+                                                            constant: 0.0)
+    
+    sceneLocationView.addConstraints([resultsImageViewContraintLeading, resultsImageViewContraintTrailing, resultsImageViewContraintHeight, resultsImageViewContraintTop!])
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     DDLogDebug("run")
     sceneLocationView.run()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(onTimerEvent(_:)), userInfo: nil, repeats: true)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -217,6 +395,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
       height: self.view.frame.size.height / 2)
     
     addBubbleButton?.layer.cornerRadius = (addBubbleButton?.bounds.size.width)!/2
+    micImageView?.layer.cornerRadius = (micImageView?.bounds.size.width)!/2
   }
   
   override func didReceiveMemoryWarning() {
@@ -341,6 +520,23 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     //self.addBugSpray(to: sceneLocationView.session.currentFrame!)
   }
   
+  @objc func micButtonTap(_ sender: UIButton!) {
+    if micCounter == 3 {
+      sound?.readFileIntoAVPlayer(filename: "performingsearch.m4a")
+      micCounter = micCounter - 1
+      sound?.toggleAVPlayer()
+    } else if micCounter == 2 {
+      animateFlightResultsWithSpeech()
+      sound?.readFileIntoAVPlayer(filename: "flightresults.m4a")
+      micCounter = micCounter - 1
+      sound?.toggleAVPlayer()
+    } else {
+      self.resultsImageView?.isHidden = true
+      self.micImageView?.isHidden = true
+      self.addBubbleButton?.isHidden = false
+    }
+  }
+  
   @objc func handleBubbleTap(_ rec: UITapGestureRecognizer) {
     if rec.state == .ended {
       let location: CGPoint = rec.location(in: sceneLocationView)
@@ -351,6 +547,43 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
         node.bubbleView.backgroundColor = UIColor.green
       }
     }
+  }
+  
+  @objc func onTimerEvent(_ timer: Timer) {
+    self.frameImageView?.isHidden = !(self.frameImageView?.isHidden)!
+    if countTimer > 0 {
+      countTimer = countTimer - 1
+    } else {
+      timer.invalidate()
+      frameImageView?.isHidden = true
+      self.searchSuccess()
+    }
+  }
+  
+  private func searchSuccess() {
+    //showARImage()
+    startVoiceAssistant()
+  }
+  
+  private func showARImage() {
+    let image = UIImage(named: "image")!
+    let annotationNode = LocationAnnotationNode(location: nil, image: image)
+    annotationNode.scaleRelativeToDistance = true
+    sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
+  }
+  
+  private func startVoiceAssistant() {
+    micImageView?.isHidden = false
+    sound?.toggleAVPlayer()
+  }
+  
+  private func animateFlightResultsWithSpeech() {
+    UIView.animate(withDuration: 2.0, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
+      let resultsTop = CGAffineTransform(translationX: 0, y: -260)
+      self.resultsImageView?.transform = resultsTop
+      let micTop = CGAffineTransform(translationX: 0, y: -10)
+      self.micImageView?.transform = micTop
+    }, completion: nil)
   }
   
 //  private func addBugSpray(to currentFrame: ARFrame) {
