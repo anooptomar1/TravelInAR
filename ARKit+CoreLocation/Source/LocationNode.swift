@@ -55,9 +55,9 @@ open class LocationAnnotationNode: LocationNode {
   ///An image to use for the annotation
   ///When viewed from a distance, the annotation will be seen at the size provided
   ///e.g. if the size is 100x100px, the annotation will take up approx 100x100 points on screen.
-  public let image: UIImage
+  public let image: UIImage?
   
-  let bubbleView: BubbleView
+  let bubbleView: BubbleView?
   
   ///Subnodes and adjustments should be applied to this subnode
   ///Required to allow scaling at the same time as having a 2D 'billboard' appearance
@@ -71,26 +71,19 @@ open class LocationAnnotationNode: LocationNode {
   public var scaleRelativeToDistance = false
   
   public init(location: CLLocation?, image: UIImage) {
-    self.bubbleView = BubbleView(frame: CGRect(x: 0, y: 0, width: 30, height: 40))
     
-    bubbleView.imageView?.image = image
-    bubbleView.imageView?.layer.borderWidth = 1.0
-    bubbleView.imageView?.layer.borderColor = UIColor.red.cgColor
-    bubbleView.imageView?.layer.cornerRadius = 10
-    bubbleView.imageView?.clipsToBounds = true
-    
-    bubbleView.messageLabel?.text = "Buy 1 Get 1"
     self.image = image
+    self.bubbleView = nil
+    let plane = SCNPlane(width: image.size.width / 100, height: image.size.height / 100)
     
-    let plane = SCNPlane(width: bubbleView.bounds.size.width / 100, height: bubbleView.bounds.size.height / 100)
     plane.cornerRadius = 1.0
-    plane.firstMaterial!.diffuse.contents = bubbleView
+    plane.firstMaterial!.diffuse.contents = self.image
     plane.firstMaterial!.lightingModel = .constant
-//    if #available(iOS 10.0, *) {
-//      plane.firstMaterial!.lightingModel = .physicallyBased
-//    } else {
-//      plane.firstMaterial!.lightingModel = .constant
-//    }
+    //    if #available(iOS 10.0, *) {
+    //      plane.firstMaterial!.lightingModel = .physicallyBased
+    //    } else {
+    //      plane.firstMaterial!.lightingModel = .constant
+    //    }
     
     annotationNode = SCNNode()
     annotationNode.geometry = plane
@@ -102,6 +95,74 @@ open class LocationAnnotationNode: LocationNode {
     constraints = [billboardConstraint]
     
     addChildNode(annotationNode)
+  }
+  
+  public init(location: CLLocation?, image: UIImage, hotelName: String, hotelPrice: String, hotelDistance: String) {
+    self.bubbleView = BubbleView(frame: CGRect(x: 0, y: 0, width: 45, height: 60))
+    self.image = nil
+    annotationNode = SCNNode()
+    super.init(location: location)
+    if let bubbleView = self.bubbleView{
+      bubbleView.imageView?.image = image
+      bubbleView.imageView?.layer.borderWidth = 1.0
+      bubbleView.imageView?.layer.borderColor = UIColor.red.cgColor
+      bubbleView.imageView?.layer.cornerRadius = 17.5
+      bubbleView.imageView?.clipsToBounds = true
+      bubbleView.messageLabel?.text = hotelName
+      bubbleView.messageLabel?.textColor = .black
+      bubbleView.messageLabel?.font = bubbleView.messageLabel?.font.withSize(5)
+      bubbleView.hotelPriceLabel?.text = hotelPrice
+      bubbleView.hotelDistanceLabel?.text = hotelDistance
+      let plane = SCNPlane(width: bubbleView.bounds.size.width / 100, height: bubbleView.bounds.size.height / 100)
+      
+      plane.cornerRadius = 1.0
+      plane.firstMaterial!.diffuse.contents = bubbleView
+      plane.firstMaterial!.lightingModel = .constant
+      //    if #available(iOS 10.0, *) {
+      //      plane.firstMaterial!.lightingModel = .physicallyBased
+      //    } else {
+      //      plane.firstMaterial!.lightingModel = .constant
+      //    }
+      annotationNode.geometry = plane
+      let billboardConstraint = SCNBillboardConstraint()
+      billboardConstraint.freeAxes = SCNBillboardAxis.Y
+      constraints = [billboardConstraint]
+      addChildNode(annotationNode)
+    }
+  }
+  
+  
+  
+  public init(location: CLLocation?, image: UIImage, message: String) {
+    self.bubbleView = BubbleView(frame: CGRect(x: 0, y: 0, width: 45, height: 60))
+    self.image = nil
+    annotationNode = SCNNode()
+    super.init(location: location)
+    if let bubbleView = self.bubbleView{
+      bubbleView.imageView?.image = image
+      bubbleView.imageView?.layer.borderWidth = 1.0
+      bubbleView.imageView?.layer.borderColor = UIColor.purple.cgColor
+      bubbleView.imageView?.layer.cornerRadius = 17.5
+      bubbleView.imageView?.clipsToBounds = true
+      bubbleView.messageLabel?.text = message
+      bubbleView.messageLabel?.textColor = .black
+      bubbleView.messageLabel?.font = bubbleView.messageLabel?.font.withSize(5)
+      let plane = SCNPlane(width: bubbleView.bounds.size.width / 100, height: bubbleView.bounds.size.height / 100)
+      
+      plane.cornerRadius = 1.0
+      plane.firstMaterial!.diffuse.contents = bubbleView
+      plane.firstMaterial!.lightingModel = .constant
+      //    if #available(iOS 10.0, *) {
+      //      plane.firstMaterial!.lightingModel = .physicallyBased
+      //    } else {
+      //      plane.firstMaterial!.lightingModel = .constant
+      //    }
+      annotationNode.geometry = plane
+      let billboardConstraint = SCNBillboardConstraint()
+      billboardConstraint.freeAxes = SCNBillboardAxis.Y
+      constraints = [billboardConstraint]
+      addChildNode(annotationNode)
+    }
   }
   
   required public init?(coder aDecoder: NSCoder) {

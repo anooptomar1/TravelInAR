@@ -21,6 +21,12 @@
 		49A3FC031F09BADB00AA59C8 /* FloatingPoint+Radians.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3FC021F09BADB00AA59C8 /* FloatingPoint+Radians.swift */; };
 		49A3FC051F0A423800AA59C8 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3FC041F0A423800AA59C8 /* CGPoint+Extensions.swift */; };
 		49D206F31F124BDD00D7D622 /* SCNNode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D206F21F124BDD00D7D622 /* SCNNode+Extensions.swift */; };
+		4B219CEB1FD2EEF7001F4421 /* marriott.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B219CE51FD2EEF6001F4421 /* marriott.png */; };
+		4B219CEC1FD2EEF7001F4421 /* parisTours.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B219CE61FD2EEF6001F4421 /* parisTours.png */; };
+		4B219CED1FD2EEF7001F4421 /* voyages.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B219CE71FD2EEF7001F4421 /* voyages.jpg */; };
+		4B219CEE1FD2EEF7001F4421 /* hyatt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B219CE81FD2EEF7001F4421 /* hyatt.jpg */; };
+		4B219CEF1FD2EEF7001F4421 /* busTour.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B219CE91FD2EEF7001F4421 /* busTour.jpg */; };
+		4B219CF01FD2EEF7001F4421 /* radisson.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B219CEA1FD2EEF7001F4421 /* radisson.jpg */; };
 		4B3FE2BD1FD1913B00CF166C /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3FE2BC1FD1913B00CF166C /* BubbleView.swift */; };
 		4B3FE2BF1FD1CC4800CF166C /* MMTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3FE2BE1FD1CC4800CF166C /* MMTViewController.swift */; };
 		4B4B8D1B1FD2ACC200699939 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4B8D1A1FD2ACC200699939 /* Sound.swift */; };
@@ -52,6 +58,12 @@
 		49A3FC021F09BADB00AA59C8 /* FloatingPoint+Radians.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Radians.swift"; sourceTree = "<group>"; };
 		49A3FC041F0A423800AA59C8 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		49D206F21F124BDD00D7D622 /* SCNNode+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNNode+Extensions.swift"; sourceTree = "<group>"; };
+		4B219CE51FD2EEF6001F4421 /* marriott.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marriott.png; sourceTree = "<group>"; };
+		4B219CE61FD2EEF6001F4421 /* parisTours.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = parisTours.png; sourceTree = "<group>"; };
+		4B219CE71FD2EEF7001F4421 /* voyages.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = voyages.jpg; sourceTree = "<group>"; };
+		4B219CE81FD2EEF7001F4421 /* hyatt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = hyatt.jpg; sourceTree = "<group>"; };
+		4B219CE91FD2EEF7001F4421 /* busTour.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = busTour.jpg; sourceTree = "<group>"; };
+		4B219CEA1FD2EEF7001F4421 /* radisson.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = radisson.jpg; sourceTree = "<group>"; };
 		4B3FE2BC1FD1913B00CF166C /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		4B3FE2BE1FD1CC4800CF166C /* MMTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MMTViewController.swift; path = "ARKit+CoreLocation/MMTViewController.swift"; sourceTree = SOURCE_ROOT; };
 		4B4B8D1A1FD2ACC200699939 /* Sound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
@@ -61,6 +73,7 @@
 		4B4B8D1F1FD2ACCD00699939 /* flightresults.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = flightresults.m4a; sourceTree = "<group>"; };
 		4B4B8D241FD2BDC400699939 /* result.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = result.png; sourceTree = "<group>"; };
 		4B4B8D261FD2C3F100699939 /* results.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = results.png; sourceTree = "<group>"; };
+		4B4B8D291FD2E7D700699939 /* bookhotel.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = bookhotel.m4a; sourceTree = "<group>"; };
 		6C10523EF85AA6B7CDF962AD /* Pods_ARKit_CoreLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARKit_CoreLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A967016A4C9D5DA8BF8AE438 /* Pods-ARKit+CoreLocation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARKit+CoreLocation.release.xcconfig"; path = "Pods/Target Support Files/Pods-ARKit+CoreLocation/Pods-ARKit+CoreLocation.release.xcconfig"; sourceTree = "<group>"; };
 		D8C205D01F5B197200675E6E /* NotSupportedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotSupportedViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +120,12 @@
 				D8C205D01F5B197200675E6E /* NotSupportedViewController.swift */,
 				4B4B8D241FD2BDC400699939 /* result.png */,
 				4B4B8D261FD2C3F100699939 /* results.png */,
+				4B219CE91FD2EEF7001F4421 /* busTour.jpg */,
+				4B219CE81FD2EEF7001F4421 /* hyatt.jpg */,
+				4B219CE51FD2EEF6001F4421 /* marriott.png */,
+				4B219CE61FD2EEF6001F4421 /* parisTours.png */,
+				4B219CEA1FD2EEF7001F4421 /* radisson.jpg */,
+				4B219CE71FD2EEF7001F4421 /* voyages.jpg */,
 				49A3FBE41F09988100AA59C8 /* Assets.xcassets */,
 				49A3FBE61F09988100AA59C8 /* LaunchScreen.storyboard */,
 				49A3FBE91F09988100AA59C8 /* Info.plist */,
@@ -140,6 +159,7 @@
 				4B4B8D1F1FD2ACCD00699939 /* flightresults.m4a */,
 				4B4B8D1E1FD2ACCD00699939 /* modem-dialing-02.mp3 */,
 				4B4B8D1D1FD2ACCD00699939 /* performingsearch.m4a */,
+				4B4B8D291FD2E7D700699939 /* bookhotel.m4a */,
 			);
 			path = Speech;
 			sourceTree = "<group>";
@@ -223,12 +243,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B4B8D271FD2C3F200699939 /* results.png in Resources */,
+				4B219CEC1FD2EEF7001F4421 /* parisTours.png in Resources */,
+				4B219CF01FD2EEF7001F4421 /* radisson.jpg in Resources */,
 				4B4B8D201FD2ACCD00699939 /* eiffeltowerfound.m4a in Resources */,
+				4B219CED1FD2EEF7001F4421 /* voyages.jpg in Resources */,
+				4B219CEB1FD2EEF7001F4421 /* marriott.png in Resources */,
 				4B4B8D251FD2BDC400699939 /* result.png in Resources */,
+				4B219CEF1FD2EEF7001F4421 /* busTour.jpg in Resources */,
 				4B4B8D221FD2ACCD00699939 /* modem-dialing-02.mp3 in Resources */,
 				49A3FBE81F09988100AA59C8 /* LaunchScreen.storyboard in Resources */,
 				4B4B8D231FD2ACCD00699939 /* flightresults.m4a in Resources */,
 				49A3FBE51F09988100AA59C8 /* Assets.xcassets in Resources */,
+				4B219CEE1FD2EEF7001F4421 /* hyatt.jpg in Resources */,
 				4B4B8D211FD2ACCD00699939 /* performingsearch.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

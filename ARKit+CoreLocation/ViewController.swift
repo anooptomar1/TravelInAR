@@ -51,6 +51,20 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
   
   var adjustNorthByTappingSidesOfScreen = false
   
+  var addHotelBubbleButton: UIButton?
+  var isFirst: Bool = true
+  
+  let hotels = [MarkupModel.init(name: "Hyatt", imageName: "hyatt.jpg", cost: "128 EUR", distance: "2 kms"),
+                MarkupModel.init(name: "Marriott", imageName: "marriott.png", cost: "100 EUR", distance: "1 kms"),
+                MarkupModel.init(name: "Radisson", imageName: "radisson.jpg", cost: "90 EUR", distance: "0.5 kms")]
+  
+  let offers = [MarkupModel.init(name: "Tour1", imageName: "busTour.jpg", cost: "20% OFF", distance: "1 kms"),
+                MarkupModel.init(name: "Tour2", imageName: "parisTours.png", cost: "30% OFF", distance: "0.2 kms"),
+                MarkupModel.init(name: "Tour3", imageName: "voyages.jpg", cost: "40% OFF", distance: "3 kms")]
+  
+  var hotelCounter: Int = 0
+  var offerCounter: Int = 0
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -147,6 +161,49 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     sceneLocationView.addGestureRecognizer(tapRec)
     
     addBubbleButton?.isHidden = true
+    
+    addHotelBubbleButton = UIButton(frame: CGRect.zero)
+    addHotelBubbleButton?.translatesAutoresizingMaskIntoConstraints = false
+    addHotelBubbleButton?.setImage(UIImage(named: "add"), for: UIControlState.normal)
+    addHotelBubbleButton?.backgroundColor = UIColor.white
+    sceneLocationView.addSubview(addHotelBubbleButton!)
+    addHotelBubbleButton?.addTarget(self, action: #selector(addHotelBubbleButtonTap(_:)), for: UIControlEvents.touchDown)
+    
+    let addHotelButtonContraintTrailing = NSLayoutConstraint(item: sceneLocationView,
+                                                             attribute: NSLayoutAttribute.trailing,
+                                                             relatedBy: NSLayoutRelation.equal,
+                                                             toItem: addHotelBubbleButton,
+                                                             attribute: NSLayoutAttribute.trailing,
+                                                             multiplier: 1.0,
+                                                             constant: 70)
+    
+    let addHotelButtonContraintBottom = NSLayoutConstraint(item: sceneLocationView,
+                                                           attribute: NSLayoutAttribute.bottom,
+                                                           relatedBy: NSLayoutRelation.equal,
+                                                           toItem: addHotelBubbleButton,
+                                                           attribute: NSLayoutAttribute.bottom,
+                                                           multiplier: 1.0,
+                                                           constant: 20)
+    
+    let addHotelButtonContraintWidth = NSLayoutConstraint(item: addHotelBubbleButton!,
+                                                          attribute: NSLayoutAttribute.width,
+                                                          relatedBy: NSLayoutRelation.equal,
+                                                          toItem: nil,
+                                                          attribute: NSLayoutAttribute.notAnAttribute,
+                                                          multiplier: 1.0,
+                                                          constant: 50)
+    
+    let addHotelButtonContraintHeight = NSLayoutConstraint(item: addHotelBubbleButton!,
+                                                           attribute: NSLayoutAttribute.height,
+                                                           relatedBy: NSLayoutRelation.equal,
+                                                           toItem: nil,
+                                                           attribute: NSLayoutAttribute.notAnAttribute,
+                                                           multiplier: 1.0,
+                                                           constant: 50)
+    
+    sceneLocationView.addConstraints([addHotelButtonContraintTrailing, addHotelButtonContraintBottom, addHotelButtonContraintWidth, addHotelButtonContraintHeight])
+    
+    addHotelBubbleButton?.isHidden = true
     
     // message label
     messageLabel = UILabel(frame: CGRect.zero)
@@ -396,6 +453,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     
     addBubbleButton?.layer.cornerRadius = (addBubbleButton?.bounds.size.width)!/2
     micImageView?.layer.cornerRadius = (micImageView?.bounds.size.width)!/2
+    addHotelBubbleButton?.layer.cornerRadius = (addHotelBubbleButton?.bounds.size.width)!/2
   }
   
   override func didReceiveMemoryWarning() {
@@ -512,12 +570,40 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
   }
   
   @objc func addBubbleButtonTap(_ sender: UIButton!) {
-    let image = UIImage(named: "dominoes")!
-    let annotationNode = LocationAnnotationNode(location: nil, image: image)
-    annotationNode.scaleRelativeToDistance = true
-    annotationNode.name = "Bla bla"
-    sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
+    var annotationNode: LocationAnnotationNode?
+    if self.isFirst{
+      self.isFirst = false
+      annotationNode = LocationAnnotationNode(location: nil, image: UIImage(named: "Image")!)
+    }else{
+      if offers.count > 0{
+        let index = offerCounter % offers.count
+        let offerMarkup = offers[index]
+        let imageName: String = offerMarkup.imageName!
+        annotationNode =  LocationAnnotationNode(location: nil, image: UIImage(named: imageName)!, hotelName: offerMarkup.name!, hotelPrice: offerMarkup.cost!, hotelDistance: offerMarkup.distance!)
+        annotationNode!.scaleRelativeToDistance = true
+        sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode!)
+        offerCounter += 1
+      }else{
+        return
+      }
+      //annotationNode =  LocationAnnotationNode(location: nil, image: UIImage(named: imageName)!, message: "Offers this wau please")
+    }
+    annotationNode!.scaleRelativeToDistance = true
+    sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode!)
     //self.addBugSpray(to: sceneLocationView.session.currentFrame!)
+  }
+  
+  @objc func addHotelBubbleButtonTap(_ sender: UIButton!) {
+    if hotels.count > 0{
+      let index = hotelCounter % hotels.count
+      let hotelMarkup = hotels[index]
+      let imageName: String = hotelMarkup.imageName!
+      var annotationNode: LocationAnnotationNode?
+      annotationNode =  LocationAnnotationNode(location: nil, image: UIImage(named: imageName)!, hotelName: hotelMarkup.name!, hotelPrice: hotelMarkup.cost!, hotelDistance: hotelMarkup.distance!)
+      annotationNode!.scaleRelativeToDistance = true
+      sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode!)
+      hotelCounter += 1
+    }
   }
   
   @objc func micButtonTap(_ sender: UIButton!) {
@@ -530,10 +616,15 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
       sound?.readFileIntoAVPlayer(filename: "flightresults.m4a")
       micCounter = micCounter - 1
       sound?.toggleAVPlayer()
-    } else {
+    } else if micCounter == 1 {
       self.resultsImageView?.isHidden = true
+      sound?.readFileIntoAVPlayer(filename: "bookhotel.m4a")
+      sound?.toggleAVPlayer()
+      micCounter = micCounter - 1
+    } else {
       self.micImageView?.isHidden = true
       self.addBubbleButton?.isHidden = false
+      self.addHotelBubbleButton?.isHidden = false
     }
   }
   
@@ -544,7 +635,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
       if let tappednode = hits.first?.node {
         let node = tappednode.parent as! LocationAnnotationNode
         let name = node.name
-        node.bubbleView.backgroundColor = UIColor.green
+        node.bubbleView?.backgroundColor = UIColor.green
       }
     }
   }
@@ -660,5 +751,18 @@ extension UIView {
     }
     
     return recursiveSubviews
+  }
+}
+
+class MarkupModel {
+  var name: String?
+  var imageName: String?
+  var cost: String?
+  var distance: String?
+  init(name: String?, imageName: String?, cost: String?, distance: String?){
+    self.name = name
+    self.imageName = imageName
+    self.cost = cost
+    self.distance = distance
   }
 }
