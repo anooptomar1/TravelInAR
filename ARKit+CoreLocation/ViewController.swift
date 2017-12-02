@@ -10,6 +10,7 @@ import UIKit
 import SceneKit 
 import MapKit
 import CocoaLumberjack
+import ARKit
 
 @available(iOS 11.0, *)
 class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDelegate {
@@ -337,6 +338,7 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
     annotationNode.scaleRelativeToDistance = true
     annotationNode.name = "Bla bla"
     sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
+    //self.addBugSpray(to: sceneLocationView.session.currentFrame!)
   }
   
   @objc func handleBubbleTap(_ rec: UITapGestureRecognizer) {
@@ -350,6 +352,16 @@ class ViewController: UIViewController, MKMapViewDelegate, SceneLocationViewDele
       }
     }
   }
+  
+//  private func addBugSpray(to currentFrame: ARFrame) {
+//    var translation = matrix_identity_float4x4
+//    translation.columns.3.x = Float(drand48()*2 - 1)
+//    translation.columns.3.z = -Float(drand48()*2 - 1)
+//    translation.columns.3.y = Float(drand48() - 0.5)
+//    let transform = currentFrame.camera.transform * translation
+//    let anchor = ARAnchor(transform: transform)
+//    sceneLocationView.session.add(anchor: anchor)
+//  }
   
   
   //MARK: MKMapViewDelegate
